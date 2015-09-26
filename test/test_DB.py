@@ -70,7 +70,7 @@ class TestDB(TestCase):
 
   def test_addPortfolio(self):
     nj = self.makeTradeJsons(trades_json)
-    db = DB('test2.db')
+    db = DB('test.db')
     db.dropTables()
     for j in nj.values():
       if not (db.addTrade(j)):

@@ -2,6 +2,11 @@ import json
 import hashlib
 import dataset
 import logging
+import sqlalchemy
+
+PORTFOLIO_ID = 'portfolioId'
+TRADE_ID = 'tradeId'
+CLIENT_ID = 'clientId'
 
 __author__ = 'maksim'
 
@@ -33,7 +38,7 @@ class DB:
     @classmethod
     def getClientTbl(self, tblname = 'clients'):
         if self.client is None:
-            self.client = self.vestfin_db.get_table(tblname, primary_id='clientId')
+            self.client = self.vestfin_db.get_table(tblname, primary_id=CLIENT_ID)
         return self.client
 
     @classmethod
@@ -48,7 +53,7 @@ class DB:
     @classmethod
     def getTradeTbl(self, tblname = 'trades'):
         if self.trade is None:
-            self.trade = self.vestfin_db.get_table(tblname, primary_id='tradeId')
+            self.trade = self.vestfin_db.get_table(tblname, primary_id=TRADE_ID)
         return self.trade
 
     @classmethod
@@ -64,30 +69,35 @@ class DB:
     @classmethod
     def getPortfolio2TradeTbl(self, tblname = 'portfolio_trades'):
         if self.portfolio_trades is None:
-            self.portfolio_trades = self.vestfin_db.get_table(tblname, primary_id='tradeId')
+            self.portfolio_trades = self.vestfin_db.get_table(tblname, primary_id=TRADE_ID)
         return self.portfolio_trades
 
     @classmethod
     def getPortfolioTbl(self, tblname = 'portfolios'):
         if self.portfolio is None:
-            self.portfolio = self.vestfin_db.get_table(tblname, primary_id='portfolioId')
+            self.portfolio = self.vestfin_db.get_table(tblname, primary_id=PORTFOLIO_ID)
+            self.portfolio.create_column('portfolioName', sqlalchemy.VARCHAR)
+            self.portfolio.create_column(CLIENT_ID, sqlalchemy.INTEGER)
         return self.portfolio
 
     @classmethod
     def addPortfolio(self, pf_json):
         try:
-            pf = self.parseJson(pf_json)
-            pf = self.setIdField(pf,'portfolioId','portfolioName')
-
             p2t = self.getPortfolio2TradeTbl()
-            pfId = pf['portfolioId']
+            pf_t = self.getPortfolioTbl()
+            self.vestfin_db.begin()
+            pf = self.parseJson(pf_json)
+            pf = self.setIdField(pf,PORTFOLIO_ID,'portfolioName')
+
+            pfId = pf[PORTFOLIO_ID]
             for t in pf['trades']:
-                p2t.insert({'portfolioId':pfId, 'tradeId':t})
+                p2t.insert({PORTFOLIO_ID:pfId, TRADE_ID:t})
 
-            self.getPortfolioTbl().insert({k:v for k,v in pf.items() if k != 'trades'})
-
+            pf_t.insert({k:v for k,v in pf.items() if k != 'trades'})
+            self.vestfin_db.commit()
             return True
-        except Exception:
+        except Exception as e:
+            self.vestfin_db.rollback()
             logger.error('Failed to add portfolio')
             return False
 
@@ -105,12 +115,12 @@ class DB:
 
     @staticmethod
     def setTradeId(r):
-        if not (r.has_key('tradeId')):
+        if not (r.has_key(TRADE_ID)):
             id_fld = r['ts'] + r['email']
-            r['tradeId'] = int(hashlib.md5(id_fld.encode()).hexdigest(), 16) % (10 ** 8)
+            r[TRADE_ID] = int(hashlib.md5(id_fld.encode()).hexdigest(), 16) % (10 ** 8)
         return r
 
 
     @staticmethod
     def setClientId(r):
-        return DB.setIdField(r, 'clientId', 'email')
+        return DB.setIdField(r, CLIENT_ID, 'email')
