@@ -20,7 +20,7 @@ trades_json = """
 {
   "email": "vatkin.public@gmail.com",
   "symbol": "AAPL",
-  "qty": "20",
+  "qty": 20,
   "ts": "2015-09-26 16:00:00.223 UTC"
 }
 """
@@ -48,45 +48,60 @@ class TestDB(TestCase):
     if not (tst_db.addTrade(trades_json)):
       self.fail()
 
-  @staticmethod
-  def makeTradeJsons(tj):
-    j = json.loads(tj)
-    newJsons = dict()
-    for i in range(1,5):
-      nj = {k:v  for k,v in j.items()}
-      ts = datetime.now()
-      nj['ts'] = ts.strftime("%Y-%m-%d %H:%M:%S.%f")
-      sleep(0.05)
-      newJsons[i] = json.dumps(nj)
-    return newJsons
 
   def test_addTrade(self):
     nj = self.makeTradeJsons(trades_json)
     db = DB('test2.db')
     db.dropTables()
     for j in nj.values():
-      if not (db.addTrade(j)):
+      if not (db.addTrade(json.dumps(j))):
         self.fail()
 
   def test_addPortfolio(self):
     nj = self.makeTradeJsons(trades_json)
     db = DB('test.db')
     db.dropTables()
-    for j in nj.values():
-      if not (db.addTrade(j)):
-        self.fail()
-
-    trades = '['
-    for key, value in nj.iteritems():
-      tr = json.loads(value)
-      DB.setTradeId(tr)
-      trades += ('' if key==1 else ', ') + str(tr['tradeId'])
-    trades += ']'
-
-    clientId = DB.setClientId(json.loads(nj[1]))['clientId']
-
-    pf_j = '{"portfolioName": "My portfolio", "clientId": %s, "trades": %s }' % (clientId, trades)
+    pf_j = self.fillPortfolioVars(db, nj)
     if not (db.addPortfolio(pf_j)):
       self.fail()
     if (db.addPortfolio(pf_j)):
       self.fail()
+
+  def test_addPortfolioCheckShorting(self):
+      nj = self.makeTradeJsons(trades_json)
+      db = DB('test.db')
+      db.dropTables()
+      pf_j = self.fillPortfolioVars(db, nj)
+      if not (db.addPortfolio(pf_j)):
+        self.fail()
+      nj = self.makeTradeJsons(trades_json, qty = -21)
+      pf_j = self.fillPortfolioVars(db, nj)
+      if (db.addPortfolio(pf_j)):
+        self.fail()
+
+  def fillPortfolioVars(self, db, nj):
+    for j in nj.values():
+      if not (db.addTrade(json.dumps(j))):
+        self.fail()
+    trades = '['
+    for key, value in nj.iteritems():
+      tr = value
+      DB.setTradeId(tr)
+      trades += ('' if key == 1 else ', ') + str(tr['tradeId'])
+    trades += ']'
+    clientId = DB.setClientId(nj[1])['clientId']
+    pf_j = '{"portfolioName": "My portfolio", "clientId": %s, "trades": %s }' % (clientId, trades)
+    return pf_j
+
+  @staticmethod
+  def makeTradeJsons(tj, qty=20):
+    j = json.loads(tj)
+    newJsons = dict()
+    for i in range(1,5):
+      nj = {k:v  for k,v in j.items()}
+      ts = datetime.now()
+      nj['ts'] = ts.strftime("%Y-%m-%d %H:%M:%S.%f")
+      nj['qty'] = qty
+      sleep(0.05)
+      newJsons[i] = nj
+    return newJsons

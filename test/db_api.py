@@ -3,6 +3,9 @@ import hashlib
 import dataset
 import logging
 import sqlalchemy
+import pandas as pd
+
+TRADE_SYMBOL = 'symbol'
 
 PORTFOLIO_ID = 'portfolioId'
 TRADE_ID = 'tradeId'
@@ -70,6 +73,7 @@ class DB:
     def getPortfolio2TradeTbl(self, tblname = 'portfolio_trades'):
         if self.portfolio_trades is None:
             self.portfolio_trades = self.vestfin_db.get_table(tblname, primary_id=TRADE_ID)
+            self.portfolio_trades.create_column(PORTFOLIO_ID, sqlalchemy.Integer)
         return self.portfolio_trades
 
     @classmethod
@@ -83,15 +87,18 @@ class DB:
     @classmethod
     def addPortfolio(self, pf_json):
         try:
-            p2t = self.getPortfolio2TradeTbl()
+            p2t_t = self.getPortfolio2TradeTbl()
             pf_t = self.getPortfolioTbl()
             self.vestfin_db.begin()
             pf = self.parseJson(pf_json)
             pf = self.setIdField(pf,PORTFOLIO_ID,'portfolioName')
 
             pfId = pf[PORTFOLIO_ID]
+
+            self.checkPositionForShorts(pf, pfId)
+
             for t in pf['trades']:
-                p2t.insert({PORTFOLIO_ID:pfId, TRADE_ID:t})
+                p2t_t.insert({PORTFOLIO_ID:pfId, TRADE_ID:t})
 
             pf_t.insert({k:v for k,v in pf.items() if k != 'trades'})
             self.vestfin_db.commit()
@@ -100,6 +107,43 @@ class DB:
             self.vestfin_db.rollback()
             logger.error('Failed to add portfolio')
             return False
+
+    @classmethod
+    def checkPositionForShorts(cls, pf, pfId):
+        storedPFQty = cls.getPortfolioPositionQty(pfId)
+        newPosQty = cls.getPositionQty(pf['trades'])
+        newPos = newPosQty.append(storedPFQty).groupby('symbol').sum()
+        for p in newPos['sumQty']:
+            if p < 0:
+                raise Exception('Short position detected')
+
+    @classmethod
+    def getPortfolioPositionQty(cls, pfId):
+        pf_qty = cls.vestfin_db.query(
+            """
+            SELECT t.symbol, sum(t.qty) sumQty
+            FROM portfolio_trades pt
+            JOIN trades t
+                ON pt.tradeId = t.tradeId and pt.portfolioId=%s
+            GROUP BY t.symbol
+            """ % pfId)
+        df = pd.DataFrame([r for r in pf_qty])
+        return df
+
+    @classmethod
+    def getPositionQty(cls, trades):
+        tr_str = ''
+        for t in trades:
+            tr_str += ('' if len(tr_str) == 0 else ', ') + str(t)
+        pf_qty = cls.vestfin_db.query(
+            """
+            SELECT t.symbol, sum(t.qty) sumQty
+            FROM trades t
+            WHERE t.tradeId in (%s)
+            GROUP BY t.symbol
+            """ % tr_str)
+        df = pd.DataFrame([r for r in pf_qty])
+        return df
 
     @classmethod
     def parseJson(cls, msg_json):
