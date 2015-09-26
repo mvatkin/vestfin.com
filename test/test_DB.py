@@ -29,13 +29,13 @@ trades_json = """
 class TestDB(TestCase):
 
   def test_addClient(self):
-    tst_db = DB('test2.db')
+    tst_db = DB('test.db')
     tst_db.dropTables()
     if not (tst_db.addClient(client_json)):
       self.fail()
 
   def test_addSameClient(self):
-    tst_db = DB('test2.db')
+    tst_db = DB('test.db')
     tst_db.dropTables()
     if not (tst_db.addClient(client_json)):
       self.fail()
@@ -43,7 +43,7 @@ class TestDB(TestCase):
       self.fail()
 
   def test_getTradeTbl(self):
-    tst_db = DB('test2.db')
+    tst_db = DB('test.db')
     tst_db.dropTables()
     if not (tst_db.addTrade(trades_json)):
       self.fail()
@@ -51,7 +51,7 @@ class TestDB(TestCase):
 
   def test_addTrade(self):
     nj = self.makeTradeJsons(trades_json)
-    db = DB('test2.db')
+    db = DB('test.db')
     db.dropTables()
     for j in nj.values():
       if not (db.addTrade(json.dumps(j))):
@@ -79,22 +79,21 @@ class TestDB(TestCase):
       if (db.addPortfolio(pf_j)):
         self.fail()
 
-  def fillPortfolioVars(self, db, nj):
+  @staticmethod
+  def fillPortfolioVars(db, nj):
     for j in nj.values():
-      if not (db.addTrade(json.dumps(j))):
-        self.fail()
+      db.addTrade(json.dumps(j))
     trades = '['
     for key, value in nj.iteritems():
       tr = value
       DB.setTradeId(tr)
       trades += ('' if key == 1 else ', ') + str(tr['tradeId'])
     trades += ']'
-    clientId = DB.setClientId(nj[1])['clientId']
-    pf_j = '{"portfolioName": "My portfolio", "clientId": %s, "trades": %s }' % (clientId, trades)
+    pf_j = '{"email": "vatkin.public@gmail.com", "portfolioName": "My portfolio", "trades": %s }' % trades
     return pf_j
 
   @staticmethod
-  def makeTradeJsons(tj, qty=20):
+  def makeTradeJsons(tj=trades_json, qty=20):
     j = json.loads(tj)
     newJsons = dict()
     for i in range(1,5):

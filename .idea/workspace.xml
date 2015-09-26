@@ -25,7 +25,7 @@
         <entry file="file://$PROJECT_DIR$/test/db_api.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="68" column="0" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
+              <caret line="182" column="8" selection-start-line="182" selection-start-column="8" selection-end-line="182" selection-end-column="8" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -33,14 +33,46 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test_DB.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="test_DB.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/test_DB.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.50953203">
-              <caret line="70" column="0" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
+            <state vertical-scroll-proportion="-7.111111">
+              <caret line="64" column="0" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="client_portfolios.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/client_portfolios.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_clientPportfolios.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/test/test_clientPportfolios.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.6187175">
+              <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#29#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="case.py" pinned="false" current-in-tab="false">
+        <entry file="file://C:/Anaconda_x64/Lib/unittest/case.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="330" column="0" selection-start-line="330" selection-start-column="0" selection-end-line="330" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -63,8 +95,10 @@
         <option value="$PROJECT_DIR$/test/test.py" />
         <option value="$PROJECT_DIR$/test/user_api.py" />
         <option value="$PROJECT_DIR$/test/trade_api.py" />
-        <option value="$PROJECT_DIR$/test/db_api.py" />
         <option value="$PROJECT_DIR$/test/test_DB.py" />
+        <option value="$PROJECT_DIR$/test/db_api.py" />
+        <option value="$PROJECT_DIR$/test/test_clientPportfolios.py" />
+        <option value="$PROJECT_DIR$/test/client_portfolios.py" />
       </list>
     </option>
   </component>
@@ -145,7 +179,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/test/db_api.py" />
     <property name="recentsLimit" value="5" />
   </component>
-  <component name="RunManager" selected="Python tests.Unittests in test_DB">
+  <component name="RunManager" selected="Python tests.Unittests in test_clientPportfolios">
     <configuration default="false" name="Unittests in TestDB" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -166,23 +200,6 @@
       <option name="PUREUNITTEST" value="true" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="user_api" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="vestfin.com" />
-      <option name="SCRIPT_NAME" value="F:\PycharmProjects\vestfin.com\test\db_api.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
     </configuration>
     <configuration default="false" name="Unittest TestDB.test_addSameClient" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
@@ -244,6 +261,28 @@
       <option name="METHOD_NAME" value="test_addPortfolio" />
       <option name="FOLDER_NAME" value="" />
       <option name="TEST_TYPE" value="TEST_METHOD" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PUREUNITTEST" value="true" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Unittests in test_clientPportfolios" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="vestfin.com" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/test_clientPportfolios.py" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
       <option name="PATTERN" value="" />
       <option name="USE_PATTERN" value="false" />
       <option name="PUREUNITTEST" value="true" />
@@ -397,19 +436,19 @@
     </configuration>
     <list size="6">
       <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests in TestDB" />
-      <item index="1" class="java.lang.String" itemvalue="Python.user_api" />
-      <item index="2" class="java.lang.String" itemvalue="Python tests.Unittest TestDB.test_addSameClient" />
-      <item index="3" class="java.lang.String" itemvalue="Python tests.Unittest TestDB.test_addTrade" />
-      <item index="4" class="java.lang.String" itemvalue="Python tests.Unittests in test_DB" />
-      <item index="5" class="java.lang.String" itemvalue="Python tests.Unittest TestDB.test_addPortfolio" />
+      <item index="1" class="java.lang.String" itemvalue="Python tests.Unittest TestDB.test_addSameClient" />
+      <item index="2" class="java.lang.String" itemvalue="Python tests.Unittest TestDB.test_addTrade" />
+      <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests in test_DB" />
+      <item index="4" class="java.lang.String" itemvalue="Python tests.Unittest TestDB.test_addPortfolio" />
+      <item index="5" class="java.lang.String" itemvalue="Python tests.Unittests in test_clientPportfolios" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittest TestDB.test_addPortfolio" />
-        <item index="1" class="java.lang.String" itemvalue="Python tests.Unittests in TestDB" />
-        <item index="2" class="java.lang.String" itemvalue="Python tests.Unittest TestDB.test_addSameClient" />
-        <item index="3" class="java.lang.String" itemvalue="Python tests.Unittest TestDB.test_addTrade" />
-        <item index="4" class="java.lang.String" itemvalue="Python.user_api" />
+        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests in test_clientPportfolios" />
+        <item index="1" class="java.lang.String" itemvalue="Python tests.Unittest TestDB.test_addPortfolio" />
+        <item index="2" class="java.lang.String" itemvalue="Python tests.Unittests in TestDB" />
+        <item index="3" class="java.lang.String" itemvalue="Python tests.Unittest TestDB.test_addSameClient" />
+        <item index="4" class="java.lang.String" itemvalue="Python tests.Unittest TestDB.test_addTrade" />
       </list>
     </recent_temporary>
   </component>
@@ -463,6 +502,13 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/test/client_portfolios.py</url>
+          <line>19</line>
+          <option name="timeStamp" value="58" />
+        </line-breakpoint>
+      </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">
@@ -470,7 +516,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="45" />
+      <option name="time" value="59" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -547,14 +593,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/Anaconda_x64/Lib/unittest/case.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="330" column="0" selection-start-line="330" selection-start-column="0" selection-end-line="330" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Anaconda_x64/Lib/site-packages/pandas/core/frame.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -563,22 +601,56 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/db_api.py">
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="68" column="0" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.66225165">
+          <caret line="2357" column="0" selection-start-line="2357" selection-start-column="0" selection-end-line="2357" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/test_DB.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-7.111111">
+          <caret line="64" column="0" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/test_DB.py">
+    <entry file="file://C:/Anaconda_x64/Lib/unittest/case.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.50953203">
-          <caret line="70" column="0" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="330" column="0" selection-start-line="330" selection-start-column="0" selection-end-line="330" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/db_api.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="182" column="8" selection-start-line="182" selection-start-column="8" selection-end-line="182" selection-end-column="8" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/client_portfolios.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/test_clientPportfolios.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6187175">
+          <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
           </folding>
         </state>
       </provider>

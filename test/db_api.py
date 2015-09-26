@@ -5,6 +5,10 @@ import logging
 import sqlalchemy
 import pandas as pd
 
+EMAIL = 'email'
+
+PORTFOLIO_NAME = 'portfolioName'
+
 TRADE_SYMBOL = 'symbol'
 
 PORTFOLIO_ID = 'portfolioId'
@@ -80,8 +84,9 @@ class DB:
     def getPortfolioTbl(self, tblname = 'portfolios'):
         if self.portfolio is None:
             self.portfolio = self.vestfin_db.get_table(tblname, primary_id=PORTFOLIO_ID)
-            self.portfolio.create_column('portfolioName', sqlalchemy.VARCHAR)
+            self.portfolio.create_column(PORTFOLIO_NAME, sqlalchemy.VARCHAR)
             self.portfolio.create_column(CLIENT_ID, sqlalchemy.INTEGER)
+            self.portfolio.create_column(EMAIL, sqlalchemy.VARCHAR)
         return self.portfolio
 
     @classmethod
@@ -91,7 +96,7 @@ class DB:
             pf_t = self.getPortfolioTbl()
             self.vestfin_db.begin()
             pf = self.parseJson(pf_json)
-            pf = self.setIdField(pf,PORTFOLIO_ID,'portfolioName')
+            pf = DB.setPortfolioId(pf)
 
             pfId = pf[PORTFOLIO_ID]
 
@@ -110,7 +115,7 @@ class DB:
 
     @classmethod
     def checkPositionForShorts(cls, pf, pfId):
-        storedPFQty = cls.getPortfolioPositionQty(pfId)
+        storedPFQty = cls.getPortfolioPositionQty( pfId)
         newPosQty = cls.getPositionQty(pf['trades'])
         newPos = newPosQty.append(storedPFQty).groupby('symbol').sum()
         for p in newPos['sumQty']:
@@ -118,7 +123,7 @@ class DB:
                 raise Exception('Short position detected')
 
     @classmethod
-    def getPortfolioPositionQty(cls, pfId):
+    def getPortfolioPositionQty(cls,  pfId):
         pf_qty = cls.vestfin_db.query(
             """
             SELECT t.symbol, sum(t.qty) sumQty
@@ -160,11 +165,27 @@ class DB:
     @staticmethod
     def setTradeId(r):
         if not (r.has_key(TRADE_ID)):
-            id_fld = r['ts'] + r['email']
+            id_fld = r['ts'] + r[EMAIL]
             r[TRADE_ID] = int(hashlib.md5(id_fld.encode()).hexdigest(), 16) % (10 ** 8)
         return r
 
+    @classmethod
+    def setPortfolioId(cls, r):
+        if not (r.has_key(PORTFOLIO_ID)):
+            id_fld = r[PORTFOLIO_NAME] + str(r[CLIENT_ID])
+            r[PORTFOLIO_ID] = int(hashlib.md5(id_fld.encode()).hexdigest(), 16) % (10 ** 8)
+        return r
 
     @staticmethod
     def setClientId(r):
-        return DB.setIdField(r, CLIENT_ID, 'email')
+        return DB.setIdField(r, CLIENT_ID, EMAIL)
+
+    def getTrades(cls, portfolioId):
+        return cls.vestfin_db.query("""
+            SELECT t.*
+            FROM portfolio_trades pt
+            JOIN trades t
+                ON pt.tradeId = t.tradeId and pt.portfolioId=%s
+        """ % portfolioId)
+
+
