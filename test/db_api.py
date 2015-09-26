@@ -92,9 +92,9 @@ class DB:
             return False
 
     @classmethod
-    def parseJson(cls, msg_json, idFieldName='clientId', idSrcField='email'):
+    def parseJson(cls, msg_json):
         r = json.loads(msg_json)
-        cls.setIdField(r, idFieldName, idSrcField)
+        cls.setClientId(r)
         return r
 
     @staticmethod
@@ -111,3 +111,6 @@ class DB:
         return r
 
 
+    @staticmethod
+    def setClientId(r):
+        return DB.setIdField(r, 'clientId', 'email')

@@ -52,7 +52,7 @@ class TestDB(TestCase):
   def makeTradeJsons(tj):
     j = json.loads(tj)
     newJsons = dict()
-    for i in range(1,20):
+    for i in range(1,5):
       nj = {k:v  for k,v in j.items()}
       ts = datetime.now()
       nj['ts'] = ts.strftime("%Y-%m-%d %H:%M:%S.%f")
@@ -68,5 +68,25 @@ class TestDB(TestCase):
       if not (db.addTrade(j)):
         self.fail()
 
-  # def test_addPortfolio(self):
-  #   self.fail()
+  def test_addPortfolio(self):
+    nj = self.makeTradeJsons(trades_json)
+    db = DB('test2.db')
+    db.dropTables()
+    for j in nj.values():
+      if not (db.addTrade(j)):
+        self.fail()
+
+    trades = '['
+    for key, value in nj.iteritems():
+      tr = json.loads(value)
+      DB.setTradeId(tr)
+      trades += ('' if key==1 else ', ') + str(tr['tradeId'])
+    trades += ']'
+
+    clientId = DB.setClientId(json.loads(nj[1]))['clientId']
+
+    pf_j = '{"portfolioName": "My portfolio", "clientId": %s, "trades": %s }' % (clientId, trades)
+    if not (db.addPortfolio(pf_j)):
+      self.fail()
+    if (db.addPortfolio(pf_j)):
+      self.fail()
